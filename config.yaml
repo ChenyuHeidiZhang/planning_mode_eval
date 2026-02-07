@@ -1,0 +1,20 @@
+# Plan Mode Eval pipeline configuration
+# Secrets (API keys) should be set via .env or environment variables.
+
+repo_url: ""  # e.g. https://github.com/owner/repo
+branch: "main"
+
+# Paths (relative to project root or absolute)
+data_dir: "data"
+repomix_path: "npx"  # or "repomix" if installed globally
+claude_cli_path: "claude"
+
+# Optional: max tokens / truncation for Repo Map when feeding to LLM
+repo_map_max_chars: 150000
+
+# Task generation
+max_merge_commits: 100
+max_tasks: 30
+
+# Runner
+plan_timeout_seconds: 300

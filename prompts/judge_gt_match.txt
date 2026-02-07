@@ -1,0 +1,17 @@
+You are evaluating whether an AI-generated plan achieves the same goal as the ground truth solution (the actual code change from a merge).
+
+User task: {{task_prompt}}
+
+Ground truth (what was actually changed):
+- Files modified: {{files_modified}}
+- Files created: {{files_created}}
+- Key additions: {{key_additions}}
+- Libraries added: {{libraries_added}}
+
+Relevant diff/code context: {{diff_summary}}
+
+AI Plan:
+{{plan}}
+
+Question: Does the AI plan achieve the same goal as the ground truth? Is it a valid alternative, or does it over-engineer or miss the goal?
+Respond with a single line: GRADE: <1-5> where 1=misses goal, 3=same goal, 5=equivalent or valid alternative. Then one short sentence justification.

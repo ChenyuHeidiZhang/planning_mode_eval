@@ -1,0 +1,9 @@
+Parse the following plan (markdown) into atomic steps. For each step, extract:
+1. Intent (what the step aims to do)
+2. Verifiable claims: any statement about library existence, function/API syntax, or architectural constraints that can be checked against documentation or the codebase.
+
+Output valid JSON only, no markdown code fence, in this shape:
+{"steps": [{"intent": "...", "claims": ["claim1", "claim2"]}, ...]}
+
+Plan:
+{{plan}}

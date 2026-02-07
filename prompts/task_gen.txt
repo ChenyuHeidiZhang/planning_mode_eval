@@ -1,0 +1,23 @@
+You are given a git merge commit and its diff (the code change that was merged). Your job is to reverse-engineer: what prompt would a user have asked to trigger this specific code change?
+
+Rules:
+- Write a single user-style prompt (as if the user typed it to an AI coding assistant).
+- The prompt can have larger scope than this single diff (e.g. "Improve error handling in the auth flow").
+- Do NOT mention the solution or implementation details (no file names, no "add retry logic", etc.).
+- Base your prompt on the repo context (Repo Map) and the diff only.
+
+Output format:
+Respond with exactly two lines:
+PROMPT: <the user prompt on one line>
+DIFFICULTY: <Easy | Medium | Hard>
+
+Repo Map (context):
+{{repo_map}}
+
+---
+Commit message:
+{{commit_message}}
+
+---
+Diff:
+{{diff}}

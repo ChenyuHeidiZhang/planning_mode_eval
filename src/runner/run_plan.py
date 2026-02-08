@@ -3,9 +3,10 @@ import asyncio
 import os
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
-from ..config import load_config, get_data_dir, get_anthropic_api_key
+from ..config import load_config, get_data_dir, get_anthropic_api_key, get_claude_working_dir
 from ..contextizer.clone import get_repo_path
 
 
@@ -71,11 +72,20 @@ async def _run_plan_async(
     prompt: str,
     repo_path: Path,
     out_dir: Path,
+    task_id: str,
     timeout_seconds: int,
     env: dict,
 ) -> Path:
     """Run plan mode via Agent SDK; save raw messages and plan. Returns plan_dest or plan_raw path."""
     from claude_agent_sdk import ClaudeAgentOptions
+
+    claude_plans_dir = get_claude_working_dir() / "plans" / task_id
+    claude_plans_dir.mkdir(parents=True, exist_ok=True)
+    claude_plan_path = claude_plans_dir / "plan.md"
+    plan_save_instruction = (
+        f"Save your final plan as a single markdown file at this path: {claude_plan_path.resolve()}"
+    )
+    prompt_with_instruction = prompt.strip() + plan_save_instruction
 
     options = ClaudeAgentOptions(
         permission_mode="plan",
@@ -85,7 +95,7 @@ async def _run_plan_async(
     messages = []
     try:
         messages = await asyncio.wait_for(
-            _collect_messages(prompt, options),
+            _collect_messages(prompt_with_instruction, options),
             timeout=timeout_seconds,
         )
     except asyncio.TimeoutError:
@@ -98,17 +108,15 @@ async def _run_plan_async(
     (out_dir / "plan_raw.txt").write_text("\n\n".join(raw_lines), encoding="utf-8")
 
     plan_dest = out_dir / "plan.md"
-    plan_md_in_repo = repo_path / ".claude" / "plan.md"
-    if plan_md_in_repo.exists():
-        shutil.copy2(plan_md_in_repo, plan_dest)
+    if claude_plan_path.exists():
+        shutil.copy2(claude_plan_path, plan_dest)
         return plan_dest
+
     plan_text = _extract_plan_text_from_messages(messages)
-    if plan_text.strip():
-        embedded_plan = _extract_plan_path_from_text(plan_text)
-        if embedded_plan is not None:
-            shutil.copy2(embedded_plan, plan_dest)
-            return plan_dest
-        plan_dest.write_text(plan_text.strip(), encoding="utf-8")
+    embedded_plan = _extract_plan_path_from_text(plan_text)
+    if embedded_plan is not None:
+        print(f"Embedded plan found at {embedded_plan}")
+        shutil.copy2(embedded_plan, plan_dest)
         return plan_dest
     return out_dir / "plan_raw.txt"
 
@@ -123,8 +131,6 @@ def run_plan_for_task(
     Checkout repo_state_commit, run Claude Agent SDK in plan mode (no CLI), save plan.
     Uses ANTHROPIC_API_KEY from env. Returns path to saved plan.md or plan_raw.txt.
     """
-    import subprocess
-
     cfg = load_config()
     repo_path = get_repo_path(repo_url)
     if not repo_path.exists():
@@ -155,6 +161,7 @@ def run_plan_for_task(
             prompt=prompt,
             repo_path=repo_path,
             out_dir=out_dir,
+            task_id=task_id,
             timeout_seconds=timeout,
             env=env,
         )

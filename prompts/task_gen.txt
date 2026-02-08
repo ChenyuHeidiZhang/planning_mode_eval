@@ -2,7 +2,7 @@ You are given a git merge commit and its diff (the code change that was merged).
 
 Rules:
 - Write a user-style prompt as if the user typed it to an AI coding agent.
-- The prompt should have a sufficiently large scope that would require the AI agent to write a **plan** before the implementation (e.g. "Improve error handling in the auth flow").
+- The prompt's task should be suitable for the AI agent's **"plan mode"**, i.e. the agent would write a plan for it before implementation (e.g. "Improve error handling in the auth flow").
 - Base your prompt on the repo context (Repo Map) and the diff. The prompt should trigger the changes in the diff.
 - Do NOT mention the solution or implementation details (no file names, no "add retry logic", etc.).
 

@@ -1,0 +1,102 @@
+[
+  {
+    "task_id": "task_001",
+    "prompt": "Update our release workflow to publish our Python package under multiple package names on PyPI during the same release process",
+    "repo_state_commit": "c2fb11c8a64a592e33c6a0707e1efdd66026e0c9",
+    "ground_truth": {
+      "files_modified": [
+        ".github/workflows/build_and_release.yml"
+      ],
+      "files_created": [],
+      "key_additions": [
+        "Merge pull request #1557 from hmoazam/publish-to-dspy"
+      ],
+      "libraries_added": []
+    },
+    "difficulty": "Medium",
+    "task_type": "feature_request"
+  },
+  {
+    "task_id": "task_002",
+    "prompt": "Improve the formatting of structured data fields in the chat adapter to ensure consistent JSON output across different optimization runs",
+    "repo_state_commit": "6a00c85d71921ff97db3b549389044c8a876917d",
+    "ground_truth": {
+      "files_modified": [
+        "README.md",
+        "docs/README.md",
+        "docs/api/assertions.md",
+        "docs/docs/building-blocks/1-language_models.md",
+        "docs/docs/building-blocks/4-data.md",
+        "docs/docs/building-blocks/6-optimizers.md",
+        "docs/docs/building-blocks/7-assertions.md",
+        "docs/docs/building-blocks/solving_your_task.md",
+        "docs/docs/cheatsheet.md",
+        "docs/docs/deep-dive/_category_.json",
+        "docs/docs/deep-dive/language_model_clients/custom-lm-client.mdx",
+        "docs/docs/deep-dive/modules/assertions.mdx",
+        "docs/docs/dspy-usecases.md",
+        "docs/docs/quick-start/minimal-example.mdx",
+        "docs/docusaurus.config.ts",
+        "docs/src/css/custom.css",
+        "dspy/adapters/chat_adapter.py",
+        "dspy/primitives/assertions.py",
+        "dspy/propose/grounded_proposer.py",
+        "dspy/teleprompt/signature_opt_typed.py",
+        "examples/coding/hackercup_utils.py",
+        "examples/qa/hotpot/hotpotqa_with_assertions.ipynb",
+        "internals/build-and-release.md",
+        "internals/release-checklist.md",
+        "testing/README.md",
+        "testing/__init__.py",
+        "testing/datasets/hotpotqa_conditional/hotpot_dev.csv",
+        "testing/datasets/hotpotqa_conditional/hotpot_test.csv",
+        "testing/datasets/hotpotqa_conditional/hotpot_train.csv",
+        "testing/optimizer_tester.py",
+        "testing/tasks/__init__.py",
+        "testing/tasks/base_task.py",
+        "testing/tasks/gsm8k.py",
+        "testing/tasks/heart_disease.py",
+        "testing/tasks/hotpotqa.py",
+        "testing/tasks/hotpotqa_conditional.py",
+        "testing/tasks/hover.py",
+        "testing/tasks/iris.py",
+        "testing/tasks/iris_typo.py",
+        "testing/tasks/scone.py",
+        "testing/tasks/tweet.py",
+        "testing/tasks/tweet_metric.py",
+        "tests/functional/test_signature_typed.py"
+      ],
+      "files_created": [
+        "docs/docs/Internals/build-and-release.md",
+        "docs/docs/Internals/release-checklist.md",
+        "testing/tasks/biodex.py"
+      ],
+      "key_additions": [
+        "Merge pull request #1569 from tkellogg/chat-adapter-pydantic",
+        "constant",
+        "tests"
+      ],
+      "libraries_added": [
+        "break",
+        "elif dataset ",
+        "return ",
+        "if self.id_to_nodes ",
+        "if self.term_to_nodes ",
+        "return",
+        "(self ",
+        "or (self.parent ",
+        "or (self ",
+        "return self.__key() ",
+        "assert answer",
+        "suffix = '' if row",
+        "label = \"Yes\" if row",
+        "correct, engaging, faithful = (m.assessment_answer.split()",
+        "if METRIC ",
+        "assert formatted_instance ",
+        "assert parsed_instance "
+      ]
+    },
+    "difficulty": "Medium",
+    "task_type": "bug_fix"
+  }
+]

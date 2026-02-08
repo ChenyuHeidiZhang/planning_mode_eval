@@ -6,10 +6,25 @@ from pathlib import Path
 
 from .config import get_project_root
 
+# When set, log files go under logs/<_run_log_subdir>/ instead of logs/
+_run_log_subdir: str | None = None
+
+
+def set_run_log_subdir(subdir: str | None) -> None:
+    """Set the run subdirectory for this process. All subsequent log_llm_call/log_search write under logs/<subdir>/."""
+    global _run_log_subdir
+    _run_log_subdir = subdir
+
+
+def get_run_log_subdir() -> str | None:
+    """Return the current run log subdirectory, or None if using the top-level logs/ dir."""
+    return _run_log_subdir
+
 
 def _ensure_logs_dir() -> Path:
-    """Ensure logs directory exists and return its path."""
-    logs_dir = get_project_root() / "logs"
+    """Ensure logs directory exists and return its path. Uses run subdir if set."""
+    base = get_project_root() / "logs"
+    logs_dir = base / _run_log_subdir if _run_log_subdir else base
     logs_dir.mkdir(parents=True, exist_ok=True)
     return logs_dir
 
@@ -64,7 +79,7 @@ def log_search(
     extra: dict | None = None,
 ) -> Path:
     """
-    Save a Google search query and result to a log file in logs/.
+    Save a search query and result to a log file in logs/.
     Returns the path to the created log file.
     """
     logs_dir = _ensure_logs_dir()

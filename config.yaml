@@ -4,10 +4,12 @@
 repo_url: "https://github.com/stanfordnlp/dspy"  # e.g. https://github.com/owner/repo
 branch: "main"
 
+# run_id is used to identify a set of generate-tasks, run-plans, and grade runs on the repo. If not set, a timestamp will be used.
+run_id: "test_run"
+
 # Paths (relative to project root or absolute)
 data_dir: "data"
 repomix_path: "npx"  # or "repomix" if installed globally
-claude_working_dir: "/Users/chenyuzhang/.claude"
 
 # Optional: max tokens / truncation for Repo Map when feeding to LLM
 repo_map_max_chars: 150000
@@ -32,4 +34,4 @@ max_tasks: 2
 plan_timeout_seconds: 600
 
 # Grading
-max_num_claims_per_task: 3  # the Google Search API only has 100 free queries per day
+max_num_claims_per_task: 3  # Brave Search API has free tier; see https://api-dashboard.search.brave.com/

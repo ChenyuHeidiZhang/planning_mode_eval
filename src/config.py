@@ -45,24 +45,15 @@ def _default_config() -> dict:
     }
 
 
-def get_data_dir() -> Path:
+def get_data_dir(run_id: str | None = None) -> Path:
+    """Return data directory. If run_id is set, return base data dir for that run (containing merge_commits, tasks, plans, scores)."""
     cfg = load_config()
     d = cfg.get("data_dir", "data")
     p = Path(d)
     if not p.is_absolute():
         p = _PROJECT_ROOT / p
-    return p
-
-
-def get_claude_working_dir() -> Path:
-    """Directory Claude Code can write to (e.g. for plans). Resolved like data_dir."""
-    cfg = load_config()
-    d = cfg.get("claude_working_dir", "")
-    if not d:
-        return _PROJECT_ROOT / "data" / "claude_working"
-    p = Path(d)
-    if not p.is_absolute():
-        p = _PROJECT_ROOT / p
+    if run_id:
+        p = p / run_id
     return p
 
 
@@ -70,9 +61,6 @@ def get_anthropic_api_key() -> str:
     return os.environ.get("ANTHROPIC_API_KEY", "")
 
 
-def get_google_search_api_key() -> str:
-    return os.environ.get("GOOGLE_SEARCH_API_KEY", "")
-
-
-def get_google_search_cx() -> str:
-    return os.environ.get("GOOGLE_SEARCH_CX", "")
+def get_brave_search_api_key() -> str:
+    """Brave Search API key for claim verification (https://api-dashboard.search.brave.com/)."""
+    return os.environ.get("BRAVE_SEARCH_API_KEY", "")

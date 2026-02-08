@@ -1,0 +1,361 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: **/__pycache__/, **/*.pyc, **/*.pyo, **/.git/, **/node_modules/, **/.venv/, **/venv/, **/dist/, **/build/, **/*.egg-info/, **/.pytest_cache/, **/.mypy_cache/, **/.ruff_cache/, **/.tox/, **/.github/, **/docs/, **/experiments/, **/checkpoints/, **/logs/, **/mlruns/, **/.ipynb_checkpoints/, **/.DS_Store, **/finetuning_ckpts/, **/profiler/, **/.devcontainer/, **/uv.lock, **/*.pt, **/*.pkl, **/*.tar.gz, **/*.log, **/*.db
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+dspy/
+  adapters/
+    types/
+      __init__.py
+      audio.py
+      base_type.py
+      citation.py
+      code.py
+      document.py
+      file.py
+      history.py
+      image.py
+      reasoning.py
+      tool.py
+    __init__.py
+    baml_adapter.py
+    base.py
+    chat_adapter.py
+    json_adapter.py
+    two_step_adapter.py
+    utils.py
+    xml_adapter.py
+  clients/
+    __init__.py
+    base_lm.py
+    cache.py
+    databricks.py
+    embedding.py
+    lm_local.py
+    lm.py
+    openai.py
+    provider.py
+    utils_finetune.py
+  datasets/
+    alfworld/
+      __init__.py
+      alfworld.py
+      base_config.yml
+    __init__.py
+    colors.py
+    dataloader.py
+    dataset.py
+    gsm8k.py
+    hotpotqa.py
+    math.py
+  dsp/
+    utils/
+      __init__.py
+      dpr.py
+      settings.py
+      utils.py
+    __init__.py
+    colbertv2.py
+  evaluate/
+    __init__.py
+    auto_evaluation.py
+    evaluate.py
+    metrics.py
+  experimental/
+    __init__.py
+  predict/
+    avatar/
+      __init__.py
+      avatar.py
+      models.py
+      signatures.py
+    __init__.py
+    aggregation.py
+    best_of_n.py
+    chain_of_thought.py
+    code_act.py
+    knn.py
+    multi_chain_comparison.py
+    parallel.py
+    parameter.py
+    predict.py
+    program_of_thought.py
+    react.py
+    refine.py
+    retry.py
+    rlm.py
+  primitives/
+    __init__.py
+    base_module.py
+    code_interpreter.py
+    example.py
+    module.py
+    prediction.py
+    python_interpreter.py
+    repl_types.py
+    runner.js
+  propose/
+    __init__.py
+    dataset_summary_generator.py
+    grounded_proposer.py
+    propose_base.py
+    utils.py
+  retrievers/
+    __init__.py
+    databricks_rm.py
+    embeddings.py
+    retrieve.py
+    weaviate_rm.py
+  signatures/
+    __init__.py
+    field.py
+    signature.py
+    utils.py
+  streaming/
+    __init__.py
+    messages.py
+    streamify.py
+    streaming_listener.py
+  teleprompt/
+    gepa/
+      __init__.py
+      gepa_utils.py
+      gepa.py
+      instruction_proposal.py
+    __init__.py
+    avatar_optimizer.py
+    bettertogether.py
+    bootstrap_finetune.py
+    bootstrap_trace.py
+    bootstrap.py
+    copro_optimizer.py
+    ensemble.py
+    grpo.py
+    infer_rules.py
+    knn_fewshot.py
+    mipro_optimizer_v2.py
+    random_search.py
+    signature_opt.py
+    simba_utils.py
+    simba.py
+    teleprompt_optuna.py
+    teleprompt.py
+    utils.py
+    vanilla.py
+  utils/
+    __init__.py
+    annotation.py
+    asyncify.py
+    caching.py
+    callback.py
+    dummies.py
+    exceptions.py
+    hasher.py
+    inspect_history.py
+    langchain_tool.py
+    logging_utils.py
+    magicattr.py
+    mcp.py
+    parallelizer.py
+    saving.py
+    syncify.py
+    unbatchify.py
+    usage_tracker.py
+  __init__.py
+  __metadata__.py
+tests/
+  adapters/
+    test_adapter_utils.py
+    test_audio.py
+    test_baml_adapter.py
+    test_base_type.py
+    test_chat_adapter.py
+    test_citation.py
+    test_code.py
+    test_document.py
+    test_json_adapter.py
+    test_reasoning.py
+    test_tool.py
+    test_two_step_adapter.py
+    test_xml_adapter.py
+  callback/
+    test_callback.py
+  clients/
+    test_cache.py
+    test_databricks.py
+    test_embedding.py
+    test_inspect_global_history.py
+    test_lm_local.py
+    test_lm.py
+  datasets/
+    test_dataset.py
+  evaluate/
+    test_evaluate.py
+    test_metrics.py
+  examples/
+    test_baleen.py
+  metadata/
+    test_metadata.py
+  predict/
+    test_aggregation.py
+    test_best_of_n.py
+    test_chain_of_thought.py
+    test_code_act.py
+    test_knn.py
+    test_multi_chain_comparison.py
+    test_parallel.py
+    test_predict.py
+    test_program_of_thought.py
+    test_react.py
+    test_refine.py
+    test_retry.py
+    test_rlm.py
+  primitives/
+    resources/
+      saved_program.json
+    test_base_module.py
+    test_example.py
+    test_module.py
+    test_python_interpreter.py
+  propose/
+    test_grounded_proposer.py
+  reliability/
+    complex_types/
+      generated/
+        test_many_types_1/
+          inputs/
+            input1.json
+            input2.json
+          program.py
+          schema.json
+        test_nesting_1/
+          inputs/
+            input1.json
+            input2.json
+          program.py
+          schema.json
+        test_nesting_2/
+          inputs/
+            input1.json
+          program.py
+          schema.json
+    generate/
+      __init__.py
+      __main__.py
+      utils.py
+    input_formats/
+      generated/
+        test_markdown_1/
+          inputs/
+            input1.json
+            input2.json
+          program.py
+          schema.json
+    __init__.py
+    conftest.py
+    README.md
+    reliability_conf.yaml
+    test_generated.py
+    test_pydantic_models.py
+    utils.py
+  retrievers/
+    test_colbertv2.py
+    test_embeddings.py
+  signatures/
+    test_adapter_file.py
+    test_adapter_image.py
+    test_custom_types.py
+    test_signature.py
+  streaming/
+    test_streaming.py
+  teleprompt/
+    gepa_dummy_lm_custom_component_selector_custom_instruction_proposer.json
+    gepa_dummy_lm.json
+    test_bootstrap_finetune.py
+    test_bootstrap_trace.py
+    test_bootstrap.py
+    test_copro_optimizer.py
+    test_ensemble.py
+    test_finetune.py
+    test_gepa_instruction_proposer.py
+    test_gepa.py
+    test_grpo.py
+    test_knn_fewshot.py
+    test_random_search.py
+    test_teleprompt.py
+    test_utils.py
+  test_utils/
+    server/
+      __init__.py
+      litellm_server_config.yaml
+      litellm_server.py
+    __init__.py
+  utils/
+    resources/
+      mcp_server.py
+    __init__.py
+    test_annotation.py
+    test_asyncify.py
+    test_exceptions.py
+    test_langchain_tool.py
+    test_magicattr.py
+    test_mcp.py
+    test_parallelizer.py
+    test_saving.py
+    test_settings.py
+    test_syncify.py
+    test_unbatchify.py
+    test_usage_tracker.py
+  __init__.py
+  conftest.py
+  mock_interpreter.py
+  README.md
+.gitignore
+.pre-commit-config.yaml
+CONTRIBUTING.md
+LICENSE
+pyproject.toml
+README.md
+</directory_structure>
+
+

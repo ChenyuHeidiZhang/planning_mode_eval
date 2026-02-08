@@ -1,4 +1,4 @@
-You are evaluating whether an AI-generated plan achieves the same goal as the ground truth solution (the actual code change from a merge).
+You are evaluating whether an AI-generated plan achieves the same goal as the ground truth solution (the actual code change from a merge). Note that the AI plan is supposed to be only a documentation and not an implementation, so do not penalize on the lack of code.
 
 User task: {{task_prompt}}
 

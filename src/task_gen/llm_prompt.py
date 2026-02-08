@@ -42,7 +42,7 @@ def classify_commit_type(
     if not api_key:
         raise ValueError("ANTHROPIC_API_KEY is required for task generation")
     content = CLASSIFY_COMMIT_PROMPT.replace("{{commit_message}}", commit_message)
-    model = "claude-sonnet-4-20250514"
+    model = "claude-sonnet-4-5"
     client = anthropic.Anthropic(api_key=api_key)
     msg = client.messages.create(
         model=model,
@@ -116,7 +116,7 @@ def reverse_engineer_prompt(
         diff = diff[:100000] + "\n... [truncated]"
     template = _load_prompt_template()
     content = template.replace("{{repo_map}}", repo_map).replace("{{commit_message}}", commit_message).replace("{{diff}}", diff)
-    model = "claude-sonnet-4-20250514"
+    model = "claude-sonnet-4-5"
     client = anthropic.Anthropic(api_key=api_key)
     msg = client.messages.create(
         model=model,

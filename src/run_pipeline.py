@@ -4,10 +4,12 @@ CLI entrypoint: contextize, generate-tasks, run-plans, grade, all.
 import argparse
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 import random
 
 from .config import load_config, get_data_dir
+from .logging_utils import set_run_log_subdir
 from .contextizer import clone_repo
 from .contextizer.repomix import get_repo_map_cached
 from .task_gen.git_extract import extract_merge_commits
@@ -147,11 +149,12 @@ def cmd_contextize(args):
 
 def cmd_generate_tasks(args):
     cfg = load_config()
+    set_run_log_subdir(args.run_id)
+    data_dir = get_data_dir(args.run_id)
     repo_url = args.repo_url or cfg.get("repo_url", "")
     if not repo_url:
         print("Error: repo_url required", file=sys.stderr)
         sys.exit(1)
-    data_dir = get_data_dir()
     repo_path = get_repo_path(repo_url)
     if not repo_path.exists():
         print("Error: repo not cloned. Run 'contextize' first.", file=sys.stderr)
@@ -182,7 +185,7 @@ def cmd_run_plans(args):
     if not repo_url:
         print("Error: repo_url required", file=sys.stderr)
         sys.exit(1)
-    data_dir = get_data_dir()
+    data_dir = get_data_dir(args.run_id)
     tasks_path = data_dir / "tasks.json"
     if not tasks_path.exists():
         print("Error: tasks.json not found. Run 'generate-tasks' first.", file=sys.stderr)
@@ -191,12 +194,13 @@ def cmd_run_plans(args):
         tasks = json.load(f)
     print(f"Running plan mode for {len(tasks)} tasks...")
     run_plans_for_all_tasks(tasks, repo_url, plans_dir=data_dir)
-    print("Done. Plans under data/plans/<task_id>/")
+    print(f"Done. Plans under data/{args.run_id}/plans/<task_id>/")
 
 
 def cmd_grade(args):
     cfg = load_config()
-    data_dir = get_data_dir()
+    set_run_log_subdir(args.run_id)
+    data_dir = get_data_dir(args.run_id)
     tasks_path = data_dir / "tasks.json"
     plans_dir = data_dir / "plans"
     if not tasks_path.exists():
@@ -205,7 +209,7 @@ def cmd_grade(args):
     with open(tasks_path, encoding="utf-8") as f:
         tasks = json.load(f)
     repo_map = ""
-    repo_map_path = data_dir / "repo_map.xml"
+    repo_map_path = get_data_dir() / "repo_map.xml"  # shared, not run-scoped
     if repo_map_path.exists():
         repo_map = repo_map_path.read_text(encoding="utf-8")[:20000]
     results = []
@@ -231,6 +235,7 @@ def cmd_grade(args):
             "score": round(score, 2),
             "breakdown": breakdown,
         })
+        print(f"Graded task {task_id} with score {score:.2f}. Breakdown: {breakdown}")
     out_path = data_dir / "scores.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
@@ -249,6 +254,7 @@ def main():
     parser = argparse.ArgumentParser(description="Plan Mode Eval pipeline")
     parser.add_argument("--repo-url", dest="repo_url", help="Repository URL (overrides config)")
     parser.add_argument("--branch", help="Branch (overrides config)")
+    parser.add_argument("--run-id", dest="run_id", default=None, help="Log run id for LLM/search logs (default: run_YYYYMMDD_HHMMSS)")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("contextize", help="Clone repo and build repo map")
     p_gen = sub.add_parser("generate-tasks", help="Generate tasks from merge commits")
@@ -258,6 +264,10 @@ def main():
     sub.add_parser("grade", help="Grade plans and write scores.json")
     sub.add_parser("all", help="Run contextize -> generate-tasks -> run-plans -> grade")
     args = parser.parse_args()
+
+    cfg = load_config()
+    args.run_id = args.run_id or cfg.get("run_id", datetime.now().strftime("run_%Y%m%d_%H%M%S"))
+
     if args.command == "contextize":
         cmd_contextize(args)
     elif args.command == "generate-tasks":

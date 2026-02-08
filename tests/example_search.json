@@ -1,0 +1,443 @@
+{
+    "type": "search",
+    "query": {
+        "original": "Python is the best programming language.",
+        "show_strict_warning": false,
+        "is_navigational": false,
+        "is_news_breaking": false,
+        "spellcheck_off": true,
+        "country": "us",
+        "bad_results": false,
+        "should_fallback": false,
+        "postal_code": "",
+        "city": "",
+        "header_country": "",
+        "more_results_available": true,
+        "state": ""
+    },
+    "mixed": {
+        "type": "mixed",
+        "main": [
+            {
+                "type": "web",
+                "index": 0,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 1,
+                "all": false
+            },
+            {
+                "type": "videos",
+                "all": true
+            },
+            {
+                "type": "web",
+                "index": 2,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 3,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 4,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 5,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 6,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 7,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 8,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 9,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 10,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 11,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 12,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 13,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 14,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 15,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 16,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 17,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 18,
+                "all": false
+            },
+            {
+                "type": "web",
+                "index": 19,
+                "all": false
+            }
+        ],
+        "top": [],
+        "side": []
+    },
+    "videos": {
+        "type": "videos",
+        "results": [
+            {
+                "type": "video_result",
+                "url": "https://www.youtube.com/watch?v=nkC_xxd4m7s",
+                "title": "Why Python is the BEST programming language (Top 10 2024) - YouTube",
+                "description": "In this Video, I am listing the top 10 reasons why Python is the only language you should learn as a beginner, in 2024. If you are new to programming and cod...",
+                "age": "January 17, 2024",
+                "page_age": "2024-01-17T14:55:02",
+                "fetched_content_timestamp": 1770287784,
+                "video": {
+                    "duration": "04:47",
+                    "creator": "Infinite Codes",
+                    "publisher": "YouTube"
+                },
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "youtube.com",
+                    "hostname": "www.youtube.com",
+                    "favicon": "https://imgs.search.brave.com/Wg4wjE5SHAargkzePU3eSLmWgVz84BEZk1SjSglJK_U/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvOTkyZTZiMWU3/YzU3Nzc5YjExYzUy/N2VhZTIxOWNlYjM5/ZGVjN2MyZDY4Nzdh/ZDYzMTYxNmI5N2Rk/Y2Q3N2FkNy93d3cu/eW91dHViZS5jb20v",
+                    "path": "\u203a watch"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/4Wja-WE3Vwnr6prLuO0prZ3WM5vTYmS5TCZ1B3mEA6I/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pLnl0/aW1nLmNvbS92aS9u/a0NfeHhkNG03cy9t/YXhyZXNkZWZhdWx0/LmpwZw",
+                    "original": "https://i.ytimg.com/vi/nkC_xxd4m7s/maxresdefault.jpg"
+                }
+            },
+            {
+                "type": "video_result",
+                "url": "https://www.youtube.com/watch?v=_eQtmNcoJKg",
+                "title": "Python is NOW the MOST Popular Programming Language! - YouTube",
+                "description": "Python surpasses JavaScript as the most popular programming language on GitHub! Learn why Python takes the throne in this video.Want FREE repositories? https...",
+                "age": "November 4, 2024",
+                "page_age": "2024-11-04T13:45:04",
+                "fetched_content_timestamp": 1770287785,
+                "video": {
+                    "duration": "10:42",
+                    "creator": "Eric Roby",
+                    "publisher": "YouTube"
+                },
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "youtube.com",
+                    "hostname": "www.youtube.com",
+                    "favicon": "https://imgs.search.brave.com/Wg4wjE5SHAargkzePU3eSLmWgVz84BEZk1SjSglJK_U/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvOTkyZTZiMWU3/YzU3Nzc5YjExYzUy/N2VhZTIxOWNlYjM5/ZGVjN2MyZDY4Nzdh/ZDYzMTYxNmI5N2Rk/Y2Q3N2FkNy93d3cu/eW91dHViZS5jb20v",
+                    "path": "\u203a watch"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/aaTscd_WZwYXAoaPT-Ad25uS6CU5CuCWxwr3MjHa4iQ/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pLnl0/aW1nLmNvbS92aS9f/ZVF0bU5jb0pLZy9t/YXhyZXNkZWZhdWx0/LmpwZw",
+                    "original": "https://i.ytimg.com/vi/_eQtmNcoJKg/maxresdefault.jpg"
+                }
+            },
+            {
+                "type": "video_result",
+                "url": "https://www.youtube.com/watch?v=3OSiyI0yJQs",
+                "title": "Is Python REALLY Worth Learning in 2025? - YouTube",
+                "description": "Is Python worth investing your time and doubling down on? I explain the pros and cons of learning Python this year.\ud83c\udf93 FastAPI course can be found at:FastAPI ...",
+                "age": "May 8, 2025",
+                "page_age": "2025-05-08T12:45:00",
+                "fetched_content_timestamp": 1770375874,
+                "video": {
+                    "duration": "06:37",
+                    "creator": "Eric Roby",
+                    "publisher": "YouTube"
+                },
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "youtube.com",
+                    "hostname": "www.youtube.com",
+                    "favicon": "https://imgs.search.brave.com/Wg4wjE5SHAargkzePU3eSLmWgVz84BEZk1SjSglJK_U/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvOTkyZTZiMWU3/YzU3Nzc5YjExYzUy/N2VhZTIxOWNlYjM5/ZGVjN2MyZDY4Nzdh/ZDYzMTYxNmI5N2Rk/Y2Q3N2FkNy93d3cu/eW91dHViZS5jb20v",
+                    "path": "\u203a watch"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/wn1UwAVMdzw6Vj95lnGse36hRZ7Q22mDmKiDQg9v334/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pLnl0/aW1nLmNvbS92aS8z/T1NpeUkweUpRcy9t/YXhyZXNkZWZhdWx0/LmpwZw",
+                    "original": "https://i.ytimg.com/vi/3OSiyI0yJQs/maxresdefault.jpg"
+                }
+            },
+            {
+                "type": "video_result",
+                "url": "https://www.youtube.com/watch?v=Ig85TDFlXbc",
+                "title": "Pros and Cons of Learning Python in 2025 - YouTube",
+                "description": "\ud83d\ude80 Zero to Python Developer with No Degree (code PYTHON for 20% off - 10 people only!) - https://www.internetmadecoder.com/python-dev-masterclass?video=Ig85T",
+                "age": "November 13, 2024",
+                "page_age": "2024-11-13T13:00:28",
+                "fetched_content_timestamp": 1770212476,
+                "video": {
+                    "duration": "14:15",
+                    "creator": "Internet Made Coder",
+                    "publisher": "YouTube"
+                },
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "youtube.com",
+                    "hostname": "www.youtube.com",
+                    "favicon": "https://imgs.search.brave.com/Wg4wjE5SHAargkzePU3eSLmWgVz84BEZk1SjSglJK_U/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvOTkyZTZiMWU3/YzU3Nzc5YjExYzUy/N2VhZTIxOWNlYjM5/ZGVjN2MyZDY4Nzdh/ZDYzMTYxNmI5N2Rk/Y2Q3N2FkNy93d3cu/eW91dHViZS5jb20v",
+                    "path": "\u203a watch"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/g0zDjSO3LqZKOFVbyS_kh__2YH55a0T-rwrddirtG1s/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pLnl0/aW1nLmNvbS92aS9J/Zzg1VERGbFhiYy9t/YXhyZXNkZWZhdWx0/LmpwZw",
+                    "original": "https://i.ytimg.com/vi/Ig85TDFlXbc/maxresdefault.jpg"
+                }
+            },
+            {
+                "type": "video_result",
+                "url": "https://www.youtube.com/watch?v=H6Zn8MdcBwg",
+                "title": "5 reasons why Python is a good language - YouTube",
+                "description": "In today's video I'm going to be give you 5 reasons why I think Python is a good language.\u25b6 Become job-ready with Python:https://www.indently.io00:00 Learnin...",
+                "age": "June 26, 2025",
+                "page_age": "2025-06-26T08:09:02",
+                "fetched_content_timestamp": 1770375863,
+                "video": {
+                    "duration": "10:54",
+                    "creator": "Indently",
+                    "publisher": "YouTube"
+                },
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "youtube.com",
+                    "hostname": "www.youtube.com",
+                    "favicon": "https://imgs.search.brave.com/Wg4wjE5SHAargkzePU3eSLmWgVz84BEZk1SjSglJK_U/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvOTkyZTZiMWU3/YzU3Nzc5YjExYzUy/N2VhZTIxOWNlYjM5/ZGVjN2MyZDY4Nzdh/ZDYzMTYxNmI5N2Rk/Y2Q3N2FkNy93d3cu/eW91dHViZS5jb20v",
+                    "path": "\u203a watch"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/mqD3AxQWT8dvlpzTibd1Zw9vRDe60r3UvIhPpdVVIjM/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pLnl0/aW1nLmNvbS92aS9I/NlpuOE1kY0J3Zy9t/YXhyZXNkZWZhdWx0/LmpwZw",
+                    "original": "https://i.ytimg.com/vi/H6Zn8MdcBwg/maxresdefault.jpg"
+                }
+            },
+            {
+                "type": "video_result",
+                "url": "https://www.youtube.com/watch?v=ZbxPYpBgcuU",
+                "title": "Why Python is the Number 1 Language to Learn Right Now - YouTube",
+                "description": "The Complete Football Analytics in Python Course:https://courses.com/courses/football-analytics-courseuse code youtube for 25% off :)My newsletter teaching a...",
+                "age": "June 6, 2025",
+                "page_age": "2025-06-06T13:45:04",
+                "fetched_content_timestamp": 1750175832,
+                "video": {
+                    "duration": "04:58",
+                    "creator": "McKay Johns",
+                    "publisher": "YouTube"
+                },
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "youtube.com",
+                    "hostname": "www.youtube.com",
+                    "favicon": "https://imgs.search.brave.com/Wg4wjE5SHAargkzePU3eSLmWgVz84BEZk1SjSglJK_U/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvOTkyZTZiMWU3/YzU3Nzc5YjExYzUy/N2VhZTIxOWNlYjM5/ZGVjN2MyZDY4Nzdh/ZDYzMTYxNmI5N2Rk/Y2Q3N2FkNy93d3cu/eW91dHViZS5jb20v",
+                    "path": "\u203a watch"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/VJM7-Jh3Y0TVwxjtE2MMRvsEw8TP9YCsx8kQ0avyDF0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pLnl0/aW1nLmNvbS92aS9a/YnhQWXBCZ2N1VS9t/YXhyZXNkZWZhdWx0/LmpwZw",
+                    "original": "https://i.ytimg.com/vi/ZbxPYpBgcuU/maxresdefault.jpg"
+                }
+            }
+        ],
+        "mutated_by_goggles": false
+    },
+    "web": {
+        "type": "search",
+        "results": [
+            {
+                "title": "r/Python on Reddit: Is Python really the second best language for everything?",
+                "url": "https://www.reddit.com/r/Python/comments/s0m4mt/is_python_really_the_second_best_language_for/",
+                "is_source_local": false,
+                "is_source_both": false,
+                "description": "Python is actually first best for a couple of stuff ... I have recently eg used Python to recursively walk through the entire project structure of one mainframe product and changing the encoding of every text file into UTF8 from EBCDIC, so I could take a look at the files on PC and compare them with the previous version, which got the same encoding conversion treatment. Writing such an example in Python is a piece of cake. ... Any of the top programming languages are only as good as the programmer.",
+                "page_age": "2022-01-10T15:08:06",
+                "profile": {
+                    "name": "Reddit",
+                    "url": "https://www.reddit.com/r/Python/comments/s0m4mt/is_python_really_the_second_best_language_for/",
+                    "long_name": "reddit.com",
+                    "img": "https://imgs.search.brave.com/U-eHNCapRHVNWWCVPPMTIvOofZULh0_A_FQKe8xTE4I/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvN2ZiNTU0M2Nj/MTFhZjRiYWViZDlk/MjJiMjBjMzFjMDRk/Y2IzYWI0MGI0MjVk/OGY5NzQzOGQ5NzQ5/NWJhMWI0NC93d3cu/cmVkZGl0LmNvbS8"
+                },
+                "language": "en",
+                "family_friendly": true,
+                "type": "search_result",
+                "subtype": "qa",
+                "is_live": false,
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "reddit.com",
+                    "hostname": "www.reddit.com",
+                    "favicon": "https://imgs.search.brave.com/U-eHNCapRHVNWWCVPPMTIvOofZULh0_A_FQKe8xTE4I/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvN2ZiNTU0M2Nj/MTFhZjRiYWViZDlk/MjJiMjBjMzFjMDRk/Y2IzYWI0MGI0MjVk/OGY5NzQzOGQ5NzQ5/NWJhMWI0NC93d3cu/cmVkZGl0LmNvbS8",
+                    "path": "  \u203a r/python  \u203a is python really the second best language for everything?"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/X2Md1jG0Zr4HnNg6XKqJcxaEEGKXdtPF1aw0PPTnQGk/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9zaGFy/ZS5yZWRkLml0L3By/ZXZpZXcvcG9zdC9z/MG00bXQ",
+                    "original": "https://share.redd.it/preview/post/s0m4mt",
+                    "logo": false
+                },
+                "age": "January 10, 2022"
+            },
+            {
+                "title": "I listened from a lot of people that Python is the best programming language. Is it true? - Quora",
+                "url": "https://www.quora.com/I-listened-from-a-lot-of-people-that-Python-is-the-best-programming-language-Is-it-true",
+                "is_source_local": false,
+                "is_source_both": false,
+                "description": "Answer (1 of 2): Every programming language is superior on it\u2019s own. <strong>Python is good for Artificial Intelligence</strong> so Java and Kotlin is good for Android development. Swift is good for IOS development, JavaScript is good for web development.",
+                "profile": {
+                    "name": "Quora",
+                    "url": "https://www.quora.com/I-listened-from-a-lot-of-people-that-Python-is-the-best-programming-language-Is-it-true",
+                    "long_name": "quora.com",
+                    "img": "https://imgs.search.brave.com/jGre8FRmkjFxQij3rGpjeFOF-u1NLnEoE4FiyrJhNLI/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvYjg3ZTk4MDVm/ZTE3YzUxZTc4Yjc3/YTE2MGI3MGVhNmQ2/MGE0Yjc4NzRhMmM1/ODMxYTIwNzI1ZjI0/NDkyZDI2Yy93d3cu/cXVvcmEuY29tLw"
+                },
+                "language": "en",
+                "family_friendly": true,
+                "type": "search_result",
+                "subtype": "generic",
+                "is_live": false,
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "quora.com",
+                    "hostname": "www.quora.com",
+                    "favicon": "https://imgs.search.brave.com/jGre8FRmkjFxQij3rGpjeFOF-u1NLnEoE4FiyrJhNLI/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvYjg3ZTk4MDVm/ZTE3YzUxZTc4Yjc3/YTE2MGI3MGVhNmQ2/MGE0Yjc4NzRhMmM1/ODMxYTIwNzI1ZjI0/NDkyZDI2Yy93d3cu/cXVvcmEuY29tLw",
+                    "path": "\u203a I-listened-from-a-lot-of-people-that-Python-is-the-best-programming-language-Is-it-true"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/-Z8b5YDCmEvVhTKWZo5ZxgSmzakY7Wgfbpw6n6A6k4g/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9xcGgu/Y2YyLnF1b3JhY2Ru/Lm5ldC9tYWluLWN1/c3RvbS10LTc4OC02/MDB4MzE1LXBpdGF3/c2ZnbHFqb25kbmpm/ZG1ncXFzbmJucmFj/cGN2LmpwZWc",
+                    "original": "https://qph.cf2.quoracdn.net/main-custom-t-788-600x315-pitawsfglqjondnjfdmgqqsnbnracpcv.jpeg",
+                    "logo": false
+                }
+            },
+            {
+                "title": "Why Is Python Considered the Top Language?",
+                "url": "https://www.bairesdev.com/blog/why-is-python-top-language/",
+                "is_source_local": false,
+                "is_source_both": false,
+                "description": "All top programming languages have advantages and disadvantages, so it feels that it\u2019s more like a matter of choice depending on the project\u2019s requirements. With that being said, then, we can safely point at Python as one of the best languages, thanks to its ease of use, libraries, communities, and many uses.",
+                "profile": {
+                    "name": "BairesDev",
+                    "url": "https://www.bairesdev.com/blog/why-is-python-top-language/",
+                    "long_name": "bairesdev.com",
+                    "img": "https://imgs.search.brave.com/suTmZF4Iihy_qJAKr53YyRIgx48YEtEMrYSZP5Wma7c/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvZjg0NmQ2MDBh/MDQ0OGY4NGIxNzli/OTRhYWNhZTZkMzk1/ZjFlOWY3MGRlMTY2/N2NkNzRlZmQ0MTlh/MDZkZmZhMC93d3cu/YmFpcmVzZGV2LmNv/bS8"
+                },
+                "language": "en",
+                "family_friendly": true,
+                "type": "search_result",
+                "subtype": "generic",
+                "is_live": false,
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "bairesdev.com",
+                    "hostname": "www.bairesdev.com",
+                    "favicon": "https://imgs.search.brave.com/suTmZF4Iihy_qJAKr53YyRIgx48YEtEMrYSZP5Wma7c/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvZjg0NmQ2MDBh/MDQ0OGY4NGIxNzli/OTRhYWNhZTZkMzk1/ZjFlOWY3MGRlMTY2/N2NkNzRlZmQ0MTlh/MDZkZmZhMC93d3cu/YmFpcmVzZGV2LmNv/bS8",
+                    "path": "  \u203a home  \u203a blog  \u203a software development"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/JASr1w2VoaAQKl2Ye3Z8zQf-EcUrqySxRBvH3f7_SZ0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9iYWly/ZXNkZXYubW8uY2xv/dWRpbmFyeS5uZXQv/YmxvZy8yMDIzLzA2/L1B5dGhvbi1Qcm9n/cmFtbWluZy1Db25z/aWRlcmVkLXRoZS1U/b3AtTGFuZ3VhZ2Uu/anBn",
+                    "original": "https://bairesdev.mo.cloudinary.net/blog/2023/06/Python-Programming-Considered-the-Top-Language.jpg",
+                    "logo": false
+                }
+            },
+            {
+                "title": "Why Python is a Good Programming Language | LearnPython.com",
+                "url": "https://learnpython.com/blog/python-is-good-programming-language/",
+                "is_source_local": false,
+                "is_source_both": false,
+                "description": "It became the most popular language for data science and machine learning because it was already widely used in organizations, and its simple syntax allowed it to be easily mastered by business analysts, data analysts, and others without any programming experience. Nowadays, Python continues to be applied for task automation and the development of web applications and software.",
+                "profile": {
+                    "name": "LearnPython.com",
+                    "url": "https://learnpython.com/blog/python-is-good-programming-language/",
+                    "long_name": "learnpython.com",
+                    "img": "https://imgs.search.brave.com/wSrhCCjVj7I39BRjaJJFFmd4lrHuidXp8S7g-4bJkho/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvZDBiYjgyMmNk/ODRjZWY1ZTVjZmU5/NWU1OWY5YjNkZDJh/MjJiNzAxMWYzOGE4/MDY2ZmNiMTFlZmJk/NzUxNzg5ZC9sZWFy/bnB5dGhvbi5jb20v"
+                },
+                "language": "en",
+                "family_friendly": true,
+                "type": "search_result",
+                "subtype": "article",
+                "is_live": false,
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "learnpython.com",
+                    "hostname": "learnpython.com",
+                    "favicon": "https://imgs.search.brave.com/wSrhCCjVj7I39BRjaJJFFmd4lrHuidXp8S7g-4bJkho/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvZDBiYjgyMmNk/ODRjZWY1ZTVjZmU5/NWU1OWY5YjNkZDJh/MjJiNzAxMWYzOGE4/MDY2ZmNiMTFlZmJk/NzUxNzg5ZC9sZWFy/bnB5dGhvbi5jb20v",
+                    "path": "\u203a blog  \u203a python-is-good-programming-language"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/VcFuQUm316cQw9fBAKr-orIQvrs5n5SC_KLK83ZNFzA/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9sZWFy/bnB5dGhvbi5jb20v/YmxvZy9weXRob24t/aXMtZ29vZC1wcm9n/cmFtbWluZy1sYW5n/dWFnZS9jb3Zlci5w/bmc",
+                    "original": "https://learnpython.com/blog/python-is-good-programming-language/cover.png",
+                    "logo": false
+                }
+            },
+            {
+                "title": "Is Python the best programming language? Why? - Quora",
+                "url": "https://www.quora.com/Is-Python-the-best-programming-language-Why",
+                "is_source_local": false,
+                "is_source_both": false,
+                "description": "Answer (1 of 28): I wouldn\u2019t say that Python is the best programming language because no such a thing exists. Python (along with other dynamic languages) is distinguished by a freedom it gives. You can customize nearly every aspect of objects life-cycle. You can change objects any way you like o...",
+                "profile": {
+                    "name": "Quora",
+                    "url": "https://www.quora.com/Is-Python-the-best-programming-language-Why",
+                    "long_name": "quora.com",
+                    "img": "https://imgs.search.brave.com/jGre8FRmkjFxQij3rGpjeFOF-u1NLnEoE4FiyrJhNLI/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvYjg3ZTk4MDVm/ZTE3YzUxZTc4Yjc3/YTE2MGI3MGVhNmQ2/MGE0Yjc4NzRhMmM1/ODMxYTIwNzI1ZjI0/NDkyZDI2Yy93d3cu/cXVvcmEuY29tLw"
+                },
+                "language": "en",
+                "family_friendly": true,
+                "type": "search_result",
+                "subtype": "generic",
+                "is_live": false,
+                "meta_url": {
+                    "scheme": "https",
+                    "netloc": "quora.com",
+                    "hostname": "www.quora.com",
+                    "favicon": "https://imgs.search.brave.com/jGre8FRmkjFxQij3rGpjeFOF-u1NLnEoE4FiyrJhNLI/rs:fit:32:32:1:0/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvYjg3ZTk4MDVm/ZTE3YzUxZTc4Yjc3/YTE2MGI3MGVhNmQ2/MGE0Yjc4NzRhMmM1/ODMxYTIwNzI1ZjI0/NDkyZDI2Yy93d3cu/cXVvcmEuY29tLw",
+                    "path": "\u203a Is-Python-the-best-programming-language-Why"
+                },
+                "thumbnail": {
+                    "src": "https://imgs.search.brave.com/-Z8b5YDCmEvVhTKWZo5ZxgSmzakY7Wgfbpw6n6A6k4g/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9xcGgu/Y2YyLnF1b3JhY2Ru/Lm5ldC9tYWluLWN1/c3RvbS10LTc4OC02/MDB4MzE1LXBpdGF3/c2ZnbHFqb25kbmpm/ZG1ncXFzbmJucmFj/cGN2LmpwZWc",
+                    "original": "https://qph.cf2.quoracdn.net/main-custom-t-788-600x315-pitawsfglqjondnjfdmgqqsnbnracpcv.jpeg",
+                    "logo": false
+                }
+            }
+        ],
+        "family_friendly": true
+    }
+}

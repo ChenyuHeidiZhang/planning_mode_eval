@@ -6,20 +6,44 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from ..config import load_config, get_data_dir, get_anthropic_api_key, get_claude_working_dir
+from ..config import load_config, get_data_dir, get_anthropic_api_key
 from ..contextizer.clone import get_repo_path
 
 
-def _extract_plan_path_from_text(text: str) -> Path | None:
-    """Extract path to actual plan file from assistant text (e.g. `/abs/path/plan.md`)."""
-    if not text or not text.strip():
-        return None
-    # Backtick-quoted path ending in .md
-    match = re.search(r"`([^`]+\.md)`", text)
-    if match:
-        p = Path(match.group(1).strip())
-        if p.exists():
-            return p
+# Regex for ToolResultBlock content: "File created successfully at: /path/to/plan.md"
+_FILE_CREATED_PATTERN = re.compile(
+    r"File created successfully at:\s*([^\s\n]+\.md)",
+    re.IGNORECASE,
+)
+
+
+def _extract_plan_path_from_messages(messages: list) -> Path | None:
+    """Extract plan file path from a ToolResultBlock with content 'File created successfully at: /.../plan.md'."""
+    for msg in messages:
+        if not hasattr(msg, "content") or not isinstance(getattr(msg, "content", None), list):
+            continue
+        for block in msg.content:
+            if type(block).__name__ != "ToolResultBlock":
+                continue
+            content = getattr(block, "content", None)
+            if content is None:
+                continue
+            # content can be str or list of dicts (e.g. [{"type": "text", "text": "..."}])
+            if isinstance(content, str):
+                text = content
+            elif isinstance(content, list):
+                parts = []
+                for item in content:
+                    if isinstance(item, dict) and "text" in item:
+                        parts.append(item["text"])
+                text = " ".join(parts) if parts else ""
+            else:
+                continue
+            match = _FILE_CREATED_PATTERN.search(text)
+            if match:
+                p = Path(match.group(1).strip())
+                if p.exists():
+                    return p
     return None
 
 
@@ -38,25 +62,6 @@ def _format_message_for_raw(message) -> str:
     return f"--- {cls} ---\n{message!r}"
 
 
-def _extract_plan_text_from_messages(messages: list) -> str:
-    """Extract plan markdown from assistant text in messages (last AssistantMessage)."""
-    try:
-        from claude_agent_sdk import AssistantMessage, TextBlock
-    except ImportError:
-        from claude_agent_sdk import AssistantMessage
-        from claude_agent_sdk.types import TextBlock  # type: ignore[attr-defined]
-
-    plan_parts = []
-    for msg in reversed(messages):
-        if isinstance(msg, AssistantMessage) and hasattr(msg, "content"):
-            for block in msg.content:
-                if isinstance(block, TextBlock) and getattr(block, "text", None):
-                    plan_parts.append(block.text)
-            if plan_parts:
-                break
-    return "\n\n".join(reversed(plan_parts)) if plan_parts else ""
-
-
 async def _collect_messages(prompt: str, options):
     """Consume query iterator into a list."""
     from claude_agent_sdk import query
@@ -72,20 +77,11 @@ async def _run_plan_async(
     prompt: str,
     repo_path: Path,
     out_dir: Path,
-    task_id: str,
     timeout_seconds: int,
     env: dict,
 ) -> Path:
     """Run plan mode via Agent SDK; save raw messages and plan. Returns plan_dest or plan_raw path."""
     from claude_agent_sdk import ClaudeAgentOptions
-
-    claude_plans_dir = get_claude_working_dir() / "plans" / task_id
-    claude_plans_dir.mkdir(parents=True, exist_ok=True)
-    claude_plan_path = claude_plans_dir / "plan.md"
-    plan_save_instruction = (
-        f"Save your final plan as a single markdown file at this path: {claude_plan_path.resolve()}"
-    )
-    prompt_with_instruction = prompt.strip() + plan_save_instruction
 
     options = ClaudeAgentOptions(
         permission_mode="plan",
@@ -95,7 +91,7 @@ async def _run_plan_async(
     messages = []
     try:
         messages = await asyncio.wait_for(
-            _collect_messages(prompt_with_instruction, options),
+            _collect_messages(prompt, options),
             timeout=timeout_seconds,
         )
     except asyncio.TimeoutError:
@@ -108,12 +104,8 @@ async def _run_plan_async(
     (out_dir / "plan_raw.txt").write_text("\n\n".join(raw_lines), encoding="utf-8")
 
     plan_dest = out_dir / "plan.md"
-    if claude_plan_path.exists():
-        shutil.copy2(claude_plan_path, plan_dest)
-        return plan_dest
 
-    plan_text = _extract_plan_text_from_messages(messages)
-    embedded_plan = _extract_plan_path_from_text(plan_text)
+    embedded_plan = _extract_plan_path_from_messages(messages)
     if embedded_plan is not None:
         print(f"Embedded plan found at {embedded_plan}")
         shutil.copy2(embedded_plan, plan_dest)
@@ -161,7 +153,6 @@ def run_plan_for_task(
             prompt=prompt,
             repo_path=repo_path,
             out_dir=out_dir,
-            task_id=task_id,
             timeout_seconds=timeout,
             env=env,
         )
@@ -175,7 +166,7 @@ def run_plans_for_all_tasks(
 ) -> list[tuple[dict, Path]]:
     """Run plan for each task. Returns list of (task, plan_path). Failed runs yield plan_path to plan_raw.txt or missing."""
     results = []
-    for task in tasks:
+    for task in tasks[1:]:
         try:
             path = run_plan_for_task(task, repo_url, plans_dir=plans_dir)
             results.append((task, path))

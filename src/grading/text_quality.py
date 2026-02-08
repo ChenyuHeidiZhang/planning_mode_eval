@@ -21,7 +21,7 @@ def score_text_quality(plan_text: str, api_key: str | None = None) -> dict:
     else:
         template = "Evaluate: CONCISENESS, PRECISION, TONE, FORMATTING (1-5 each). Plan: {{plan}}"
     content = template.replace("{{plan}}", plan_text[:8000])
-    model = "claude-sonnet-4-20250514"
+    model = "claude-sonnet-4-5"
     try:
         client = anthropic.Anthropic(api_key=api_key)
         msg = client.messages.create(

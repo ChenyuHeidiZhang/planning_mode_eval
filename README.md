@@ -5,7 +5,7 @@ This project aims to build an evaluation pipeline for **Claude Code's Plan Mode*
 ## Usage
 
 1. **Install dependencies:** `pip install -r requirements.txt` (or `pip install -e .`). Ensure **Node/npx** (for repomix) and **git** are available. Install and authenticate the **Claude Code CLI** for the run-plans step.
-2. **Configure:** Copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`. Optionally set `GOOGLE_SEARCH_API_KEY` and `GOOGLE_SEARCH_CX` for claim verification. Set `repo_url` (and optionally `branch`) in `config.yaml`.
+2. **Configure:** Copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`. Optionally set `BRAVE_SEARCH_API_KEY` for claim verification (get a key at [Brave Search API](https://api-dashboard.search.brave.com/)). Set `repo_url` (and optionally `branch`) in `config.yaml`.
 3. **Run the pipeline** from the project root:
    - `python -m src.run_pipeline contextize` — clone repo and build repo map
    - `python -m src.run_pipeline generate-tasks` — generate tasks from last N merge commits
@@ -19,8 +19,9 @@ This project aims to build an evaluation pipeline for **Claude Code's Plan Mode*
 Tools used:
 * Repomix: https://repomix.com/
 * Claude Code: https://platform.claude.com/docs/en/agent-sdk/overview 
-* Google Custom Search Engine: https://programmablesearchengine.google.com/
-
+* [Not available for new customers] Google Custom Search Engine: https://programmablesearchengine.google.com/
+    * To use the search API, set up an API key in Google Cloud Console for your project. Then, login to the project using `gcloud init`. (You may need to install gcloud here: https://docs.cloud.google.com/sdk/docs/install-sdk)
+* Brave Search API: https://api-dashboard.search.brave.com/api-reference/web/search/get
 
 ---
 

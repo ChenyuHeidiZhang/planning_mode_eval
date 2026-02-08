@@ -1,0 +1,34 @@
+[
+  {
+    "task_id": "task_001",
+    "score": 48.75,
+    "breakdown": {
+      "claim_ratio": 1.0,
+      "unknown_ratio": 0.5,
+      "logical_soundness": 0.75,
+      "file_recall": 0.0,
+      "file_precision": 0.0,
+      "gt_judge": 0.0,
+      "conciseness": 0.5,
+      "precision": 0.75,
+      "tone": 0.75,
+      "formatting": 0.75
+    }
+  },
+  {
+    "task_id": "task_002",
+    "score": 59.47,
+    "breakdown": {
+      "claim_ratio": 1.0,
+      "unknown_ratio": 1.0,
+      "logical_soundness": 0.75,
+      "file_recall": 0.021739130434782608,
+      "file_precision": 0.05,
+      "gt_judge": 0.25,
+      "conciseness": 0.75,
+      "precision": 1.0,
+      "tone": 1.0,
+      "formatting": 1.0
+    }
+  }
+]

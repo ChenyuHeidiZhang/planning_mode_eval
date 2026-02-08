@@ -74,7 +74,7 @@ def judge_gt_match(
     content = content.replace("{{commit_message}}", (commit_message or "N/A")[:2000])
     content = content.replace("{{diff_summary}}", (diff_summary[:8000] if diff_summary else "N/A"))
     content = content.replace("{{plan}}", plan_text[:6000])
-    model = "claude-sonnet-4-20250514"
+    model = "claude-opus-4-6"
     try:
         client = anthropic.Anthropic(api_key=api_key)
         msg = client.messages.create(

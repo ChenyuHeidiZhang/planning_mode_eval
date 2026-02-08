@@ -29,7 +29,7 @@ def extract_claims(plan_text: str, api_key: str | None = None) -> list[dict]:
         return []
     template = _load_template()
     content = template.replace("{{plan}}", plan_text[:50000])
-    model = "claude-sonnet-4-20250514"
+    model = "claude-sonnet-4-5"
     client = anthropic.Anthropic(api_key=api_key)
     msg = client.messages.create(
         model=model,

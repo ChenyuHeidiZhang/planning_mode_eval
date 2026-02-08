@@ -21,33 +21,24 @@ def _repo_slug(repo_url: str) -> str:
 def clone_repo(repo_url: str, branch: str | None = None) -> Path:
     """
     Clone the repo into data_dir/repos/<owner>_<repo>/.
-    Uses shallow clone with depth 500 so last 100 PRs have history.
+    Full clone (no depth limit) so we can extract enough merge commits.
     Returns path to the cloned repo root.
     """
     if not repo_url or not repo_url.strip():
         raise ValueError("repo_url is required")
-    cfg = load_config()
     data_dir = get_data_dir()
     repos_dir = data_dir / "repos"
     repos_dir.mkdir(parents=True, exist_ok=True)
     slug = _repo_slug(repo_url)
     dest = repos_dir / slug
-    depth = 500
-    cmd = [
-        "git",
-        "clone",
-        "--depth",
-        str(depth),
-        repo_url,
-        str(dest),
-    ]
+    cmd = ["git", "clone", repo_url, str(dest)]
     if branch:
         cmd.insert(-1, "--branch")
         cmd.insert(-1, branch)
     if dest.exists():
-        # already cloned; optionally fetch more
+        # already cloned; update refs
         subprocess.run(
-            ["git", "fetch", "--depth", str(depth)],
+            ["git", "fetch"],
             cwd=dest,
             check=False,
             capture_output=True,

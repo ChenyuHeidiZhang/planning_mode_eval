@@ -1,5 +1,6 @@
 # Data and artifacts
 data/
+logs/
 .env
 *.pyc
 __pycache__/

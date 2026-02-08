@@ -4,6 +4,7 @@ import re
 import anthropic
 
 from ..config import get_anthropic_api_key, get_project_root
+from ..logging_utils import log_llm_call
 
 
 def score_text_quality(plan_text: str, api_key: str | None = None) -> dict:
@@ -20,14 +21,22 @@ def score_text_quality(plan_text: str, api_key: str | None = None) -> dict:
     else:
         template = "Evaluate: CONCISENESS, PRECISION, TONE, FORMATTING (1-5 each). Plan: {{plan}}"
     content = template.replace("{{plan}}", plan_text[:8000])
+    model = "claude-sonnet-4-20250514"
     try:
         client = anthropic.Anthropic(api_key=api_key)
         msg = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model=model,
             max_tokens=256,
             messages=[{"role": "user", "content": content}],
         )
         text = (msg.content[0].text if msg.content else "").strip()
+        log_llm_call(
+            "score_text_quality",
+            content,
+            text,
+            model=model,
+            max_tokens=256,
+        )
         def parse_score(name: str) -> float:
             m = re.search(rf"{name}\s*:\s*([1-5])", text, re.I)
             if m:
@@ -39,5 +48,13 @@ def score_text_quality(plan_text: str, api_key: str | None = None) -> dict:
             "tone": parse_score("TONE"),
             "formatting": parse_score("FORMATTING"),
         }
-    except Exception:
+    except Exception as e:
+        log_llm_call(
+            "score_text_quality",
+            content,
+            "",
+            model=model,
+            max_tokens=256,
+            extra={"error": str(e)},
+        )
         return {"conciseness": 0.5, "precision": 0.5, "tone": 0.5, "formatting": 0.5}

@@ -16,6 +16,13 @@ This project aims to build an evaluation pipeline for **Claude Code's Plan Mode*
    Or install the package and run: `plan-eval contextize`, `plan-eval generate-tasks`, etc.
 
 ---
+Tools used:
+* Repomix: https://repomix.com/
+* Claude Code: https://platform.claude.com/docs/en/agent-sdk/overview 
+* Google Custom Search Engine: https://programmablesearchengine.google.com/
+
+
+---
 
 ## 0. Contextizer module to produce a "Repo Map"
 
@@ -225,8 +232,8 @@ The final score (0-100) is a weighted average of sub-scores under the 3 dimensio
 ### 2. Correctness - Ground Truth Matching (40% Weight)
 
 **Metrics:**
-* Ground Truth Recall (Files found / Files needed) (10%)
-* False Positive Rate (Irrelevant files edited) (10%)
+* Recall (Files found / Files needed) (10%)
+* Precision (Files found / all files mentioned) (10%)
 * LLM judge of GT matching (20%)
 
 ### 3. Quality (20% Weight)

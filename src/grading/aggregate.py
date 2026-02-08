@@ -30,6 +30,7 @@ def aggregate_scores(
 
 def aggregate_task_result(
     claim_ratio: float,
+    unknown_ratio: float,
     logical_soundness: float,
     gt_metrics: dict,
     quality_scores: dict,
@@ -52,6 +53,7 @@ def aggregate_task_result(
     )
     breakdown = {
         "claim_ratio": claim_ratio,
+        "unknown_ratio": unknown_ratio,
         "logical_soundness": logical_soundness,
         "file_recall": gt_metrics.get("file_recall", 0),
         "file_precision": gt_metrics.get("file_precision", 0),

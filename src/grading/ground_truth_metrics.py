@@ -1,9 +1,12 @@
 """Ground truth metrics: file recall/precision, LLM judge for goal equivalence."""
+import json
 import re
+from pathlib import Path
 
 import anthropic
 
-from ..config import get_anthropic_api_key, get_project_root
+from ..config import get_anthropic_api_key, get_data_dir, get_project_root
+from ..logging_utils import log_llm_call
 
 
 def _extract_plan_files(plan_text: str) -> list[str]:
@@ -30,8 +33,6 @@ def compute_file_recall_precision(plan_text: str, ground_truth: dict) -> tuple[f
     """
     truth_files = set(ground_truth.get("files_modified", []) + ground_truth.get("files_created", []))
     plan_files = set(_extract_plan_files(plan_text))
-    if not truth_files:
-        return 1.0, 1.0 if not plan_files else 0.0
 
     def n(p):
         return p.lstrip("./").replace("//", "/")
@@ -49,10 +50,12 @@ def judge_gt_match(
     ground_truth: dict,
     plan_text: str,
     diff_summary: str = "",
+    commit_message: str = "",
     api_key: str | None = None,
 ) -> float:
     """
     LLM judge: does plan achieve same goal as ground truth? Grade 1-5. Return normalized 0-1.
+    commit_message and diff_summary come from the merge commit (parent_sha == repo_state_commit).
     """
     api_key = api_key or get_anthropic_api_key()
     if not api_key:
@@ -68,40 +71,81 @@ def judge_gt_match(
     content = content.replace("{{files_created}}", ", ".join(ground_truth.get("files_created", [])))
     content = content.replace("{{key_additions}}", ", ".join(ground_truth.get("key_additions", [])))
     content = content.replace("{{libraries_added}}", ", ".join(ground_truth.get("libraries_added", [])))
-    content = content.replace("{{diff_summary}}", diff_summary[:2000] if diff_summary else "N/A")
+    content = content.replace("{{commit_message}}", (commit_message or "N/A")[:2000])
+    content = content.replace("{{diff_summary}}", (diff_summary[:8000] if diff_summary else "N/A"))
     content = content.replace("{{plan}}", plan_text[:6000])
+    model = "claude-sonnet-4-20250514"
     try:
         client = anthropic.Anthropic(api_key=api_key)
         msg = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model=model,
             max_tokens=256,
             messages=[{"role": "user", "content": content}],
         )
         text = (msg.content[0].text if msg.content else "").strip()
+        log_llm_call(
+            "judge_gt_match",
+            content,
+            text,
+            model=model,
+            max_tokens=256,
+        )
         m = re.search(r"GRADE:\s*([1-5])", text, re.I)
         if m:
             g = int(m.group(1))
             return (g - 1) / 4.0
-    except Exception:
-        pass
+    except Exception as e:
+        log_llm_call(
+            "judge_gt_match",
+            content,
+            "",
+            model=model,
+            max_tokens=256,
+            extra={"error": str(e)},
+        )
     return 0.5
+
+
+def _load_commits_by_parent(data_dir: Path | None) -> dict[str, dict]:
+    """Load merge_commits.json and return dict keyed by parent_sha."""
+    if data_dir is None:
+        data_dir = get_data_dir()
+    path = data_dir / "merge_commits.json"
+    if not path.exists():
+        return {}
+    with open(path, encoding="utf-8") as f:
+        commits = json.load(f)
+    return {c["parent_sha"]: c for c in commits if c.get("parent_sha")}
 
 
 def compute_ground_truth_metrics(
     task: dict,
     plan_text: str,
     repo_map: str = "",
+    data_dir: Path | None = None,
     api_key: str | None = None,
 ) -> dict:
     """
     Return dict: recall, precision, gt_judge (0-1), and raw values for aggregation.
+    If data_dir has merge_commits.json, fetches commit by repo_state_commit (parent_sha)
+    and passes commit message + diff into the LLM judge.
     """
     gt = task.get("ground_truth", {})
     recall, precision = compute_file_recall_precision(plan_text, gt)
+    commit_message = ""
+    diff_summary = ""
+    commits_by_parent = _load_commits_by_parent(data_dir)
+    repo_state_commit = task.get("repo_state_commit", "")
+    if repo_state_commit and repo_state_commit in commits_by_parent:
+        c = commits_by_parent[repo_state_commit]
+        commit_message = c.get("message", "")
+        diff_summary = c.get("diff", "")
     gt_judge = judge_gt_match(
         task.get("prompt", ""),
         gt,
         plan_text,
+        diff_summary=diff_summary,
+        commit_message=commit_message,
         api_key=api_key,
     )
     return {

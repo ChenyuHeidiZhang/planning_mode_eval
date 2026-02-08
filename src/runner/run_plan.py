@@ -1,22 +1,130 @@
 """Run headless Claude Plan Mode for each task and capture plan output."""
-import subprocess
+import asyncio
+import os
+import re
+import shutil
 from pathlib import Path
 
-from ..config import load_config, get_data_dir
+from ..config import load_config, get_data_dir, get_anthropic_api_key
 from ..contextizer.clone import get_repo_path
+
+
+def _extract_plan_path_from_text(text: str) -> Path | None:
+    """Extract path to actual plan file from assistant text (e.g. `/abs/path/plan.md`)."""
+    if not text or not text.strip():
+        return None
+    # Backtick-quoted path ending in .md
+    match = re.search(r"`([^`]+\.md)`", text)
+    if match:
+        p = Path(match.group(1).strip())
+        if p.exists():
+            return p
+    return None
+
+
+def _format_message_for_raw(message) -> str:
+    """Format a single SDK message for plan_raw.txt."""
+    cls = type(message).__name__
+    if hasattr(message, "content"):
+        parts = []
+        for block in message.content:
+            bcls = type(block).__name__
+            if hasattr(block, "text"):
+                parts.append(f"[{bcls}]\n{block.text}")
+            else:
+                parts.append(f"[{bcls}]\n{block!r}")
+        return f"--- {cls} ---\n" + "\n".join(parts)
+    return f"--- {cls} ---\n{message!r}"
+
+
+def _extract_plan_text_from_messages(messages: list) -> str:
+    """Extract plan markdown from assistant text in messages (last AssistantMessage)."""
+    try:
+        from claude_agent_sdk import AssistantMessage, TextBlock
+    except ImportError:
+        from claude_agent_sdk import AssistantMessage
+        from claude_agent_sdk.types import TextBlock  # type: ignore[attr-defined]
+
+    plan_parts = []
+    for msg in reversed(messages):
+        if isinstance(msg, AssistantMessage) and hasattr(msg, "content"):
+            for block in msg.content:
+                if isinstance(block, TextBlock) and getattr(block, "text", None):
+                    plan_parts.append(block.text)
+            if plan_parts:
+                break
+    return "\n\n".join(reversed(plan_parts)) if plan_parts else ""
+
+
+async def _collect_messages(prompt: str, options):
+    """Consume query iterator into a list."""
+    from claude_agent_sdk import query
+
+    messages = []
+    async for message in query(prompt=prompt, options=options):
+        messages.append(message)
+        # print(message)
+    return messages
+
+
+async def _run_plan_async(
+    prompt: str,
+    repo_path: Path,
+    out_dir: Path,
+    timeout_seconds: int,
+    env: dict,
+) -> Path:
+    """Run plan mode via Agent SDK; save raw messages and plan. Returns plan_dest or plan_raw path."""
+    from claude_agent_sdk import ClaudeAgentOptions
+
+    options = ClaudeAgentOptions(
+        permission_mode="plan",
+        cwd=str(repo_path),
+        env=env,
+    )
+    messages = []
+    try:
+        messages = await asyncio.wait_for(
+            _collect_messages(prompt, options),
+            timeout=timeout_seconds,
+        )
+    except asyncio.TimeoutError:
+        (out_dir / "error.txt").write_text("Plan run timed out.", encoding="utf-8")
+        raw_lines = [_format_message_for_raw(m) for m in messages]
+        (out_dir / "plan_raw.txt").write_text("\n\n".join(raw_lines), encoding="utf-8")
+        return out_dir / "plan_raw.txt"
+
+    raw_lines = [_format_message_for_raw(m) for m in messages]
+    (out_dir / "plan_raw.txt").write_text("\n\n".join(raw_lines), encoding="utf-8")
+
+    plan_dest = out_dir / "plan.md"
+    plan_md_in_repo = repo_path / ".claude" / "plan.md"
+    if plan_md_in_repo.exists():
+        shutil.copy2(plan_md_in_repo, plan_dest)
+        return plan_dest
+    plan_text = _extract_plan_text_from_messages(messages)
+    if plan_text.strip():
+        embedded_plan = _extract_plan_path_from_text(plan_text)
+        if embedded_plan is not None:
+            shutil.copy2(embedded_plan, plan_dest)
+            return plan_dest
+        plan_dest.write_text(plan_text.strip(), encoding="utf-8")
+        return plan_dest
+    return out_dir / "plan_raw.txt"
 
 
 def run_plan_for_task(
     task: dict,
     repo_url: str,
     plans_dir: Path | None = None,
-    claude_path: str | None = None,
     timeout_seconds: int | None = None,
 ) -> Path:
     """
-    Checkout repo_state_commit, run claude --permission-mode plan -p "<prompt>", save plan.
-    Returns path to saved plan.md (or plan_raw.txt if plan.md not produced).
+    Checkout repo_state_commit, run Claude Agent SDK in plan mode (no CLI), save plan.
+    Uses ANTHROPIC_API_KEY from env. Returns path to saved plan.md or plan_raw.txt.
     """
+    import subprocess
+
     cfg = load_config()
     repo_path = get_repo_path(repo_url)
     if not repo_path.exists():
@@ -35,32 +143,22 @@ def run_plan_for_task(
         check=True,
         capture_output=True,
     )
-    claude_cmd = claude_path or cfg.get("claude_cli_path", "claude")
     timeout = timeout_seconds or cfg.get("plan_timeout_seconds", 300)
     prompt = task.get("prompt", "")
-    proc = subprocess.run(
-        [claude_cmd, "--permission-mode", "plan", "-p", prompt],
-        cwd=repo_path,
-        capture_output=True,
-        text=True,
-        timeout=timeout,
+    env = os.environ.copy()
+    api_key = get_anthropic_api_key()
+    if api_key:
+        env["ANTHROPIC_API_KEY"] = api_key
+
+    return asyncio.run(
+        _run_plan_async(
+            prompt=prompt,
+            repo_path=repo_path,
+            out_dir=out_dir,
+            timeout_seconds=timeout,
+            env=env,
+        )
     )
-    raw_out = proc.stdout or ""
-    raw_err = proc.stderr or ""
-    (out_dir / "plan_raw.txt").write_text(raw_out, encoding="utf-8")
-    if raw_err:
-        (out_dir / "plan_stderr.txt").write_text(raw_err, encoding="utf-8")
-    plan_md = repo_path / ".claude" / "plan.md"
-    if plan_md.exists():
-        plan_content = plan_md.read_text(encoding="utf-8")
-        plan_dest = out_dir / "plan.md"
-        plan_dest.write_text(plan_content, encoding="utf-8")
-        return plan_dest
-    if raw_out.strip():
-        plan_dest = out_dir / "plan.md"
-        plan_dest.write_text(raw_out, encoding="utf-8")
-        return plan_dest
-    return out_dir / "plan_raw.txt"
 
 
 def run_plans_for_all_tasks(
@@ -80,4 +178,5 @@ def run_plans_for_all_tasks(
             out_dir.mkdir(parents=True, exist_ok=True)
             (out_dir / "error.txt").write_text(str(e), encoding="utf-8")
             results.append((task, out_dir / "plan.md"))  # placeholder; may not exist
+        print(f"Ran plan for task {task.get('task_id', 'unknown')}")
     return results

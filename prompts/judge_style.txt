@@ -1,8 +1,8 @@
-Evaluate the following plan's text quality on four dimensions (each 1-5). Output exactly 4 lines:
+Evaluate the following plan's text quality on four dimensions (each on a scale of 1-5). Output exactly 4 lines:
 
-CONCISENESS: <1-5>  (information density; low fluff; avoid "In order to...", "It is important to note...")
-PRECISION: <1-5>    (specific terminology over vague; e.g. "refactor Auth class" not "fix the thing")
-TONE: <1-5>         (professional, action-oriented; "Implement X" not "We could try to...")
+CONCISENESS: <1-5>  (clear description with high information density and low fluff)
+PRECISION: <1-5>    (using specific terminology that's right on the point over vague language)
+TONE: <1-5>         (professional, action-oriented)
 FORMATTING: <1-5>   (use of markdown, bullets, code blocks for readability)
 
 Plan:

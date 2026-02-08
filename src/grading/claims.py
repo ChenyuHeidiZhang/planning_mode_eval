@@ -6,6 +6,7 @@ from pathlib import Path
 import anthropic
 
 from ..config import get_anthropic_api_key, get_project_root
+from ..logging_utils import log_llm_call
 
 
 def _load_template() -> str:
@@ -28,13 +29,21 @@ def extract_claims(plan_text: str, api_key: str | None = None) -> list[dict]:
         return []
     template = _load_template()
     content = template.replace("{{plan}}", plan_text[:50000])
+    model = "claude-sonnet-4-20250514"
     client = anthropic.Anthropic(api_key=api_key)
     msg = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model=model,
         max_tokens=2048,
         messages=[{"role": "user", "content": content}],
     )
     text = msg.content[0].text if msg.content else ""
+    log_llm_call(
+        "extract_claims",
+        content,
+        text,
+        model=model,
+        max_tokens=2048,
+    )
     # Extract JSON (allow wrapped in ```json ... ```)
     json_str = text.strip()
     m = re.search(r"\{[\s\S]*\"steps\"[\s\S]*\}", text)

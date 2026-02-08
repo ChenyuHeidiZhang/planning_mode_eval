@@ -8,7 +8,9 @@ Ground truth (what was actually changed):
 - Key additions: {{key_additions}}
 - Libraries added: {{libraries_added}}
 
-Relevant diff/code context: {{diff_summary}}
+Ground truth commit message (actual merge): {{commit_message}}
+
+Relevant diff/code context (actual merge diff): {{diff_summary}}
 
 AI Plan:
 {{plan}}

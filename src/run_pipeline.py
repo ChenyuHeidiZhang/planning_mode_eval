@@ -5,13 +5,23 @@ import argparse
 import json
 import sys
 from pathlib import Path
+import random
 
 from .config import load_config, get_data_dir
 from .contextizer import clone_repo
 from .contextizer.repomix import get_repo_map_cached
 from .task_gen.git_extract import extract_merge_commits
+from .task_gen.git_extract import MergeCommitInfo
 from .task_gen.ground_truth import extract_ground_truth
-from .task_gen.llm_prompt import reverse_engineer_prompt, build_task_object
+from .task_gen.llm_prompt import (
+    reverse_engineer_prompt,
+    build_task_object,
+    classify_commit_type,
+    COMMIT_TYPE_FEATURE,
+    COMMIT_TYPE_BUG,
+    COMMIT_TYPE_REFACTOR,
+    COMMIT_TYPE_DO_NOT_USE,
+)
 from .contextizer.clone import get_repo_path
 from .runner.run_plan import run_plans_for_all_tasks
 from .grading.claims import extract_claims
@@ -19,6 +29,106 @@ from .grading.verify_search import verify_claims_via_search, score_logical_sound
 from .grading.ground_truth_metrics import compute_ground_truth_metrics
 from .grading.text_quality import score_text_quality
 from .grading.aggregate import aggregate_task_result
+
+
+def _save_merge_commits(merges: list[MergeCommitInfo], data_dir: Path) -> None:
+    """Save merge commits to data_dir/merge_commits.json for later grading lookup."""
+    data_dir.mkdir(parents=True, exist_ok=True)
+    commits_data = [
+        {
+            "parent_sha": m.parent_sha,
+            "merge_sha": m.merge_sha,
+            "message": m.message,
+            "diff": m.diff,
+            "sub_commits": [
+                {"sha": sc.sha, "message": sc.message, "diff": sc.diff}
+                for sc in m.sub_commits
+            ],
+        }
+        for m in merges
+    ]
+    path = data_dir / "merge_commits.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(commits_data, f, indent=2)
+    print(f"Saved {len(commits_data)} merge commits to {path}")
+
+
+def _select_merges_by_type(
+    merges: list[MergeCommitInfo],
+    max_tasks: int,
+) -> list[tuple[MergeCommitInfo, str]]:
+    """Classify merges and select up to max_tasks, aiming ~50% feature, ~30% bug, ~20% refactor."""
+    n_b = round(0.3 * max_tasks)
+    n_r = round(0.2 * max_tasks)
+    n_f = max_tasks - n_b - n_r
+    by_type = {COMMIT_TYPE_FEATURE: [], COMMIT_TYPE_BUG: [], COMMIT_TYPE_REFACTOR: []}
+    for m in merges:
+        try:
+            ctype = classify_commit_type(m.message)
+        except Exception as e:
+            print(f"  Merge {m.merge_sha[:8]} classify error: {e}", file=sys.stderr)
+            ctype = COMMIT_TYPE_FEATURE
+        if ctype == COMMIT_TYPE_DO_NOT_USE:
+            continue
+        by_type[ctype].append((m, ctype))
+        if (
+            len(by_type[COMMIT_TYPE_FEATURE]) >= n_f
+            and len(by_type[COMMIT_TYPE_BUG]) >= n_b
+            and len(by_type[COMMIT_TYPE_REFACTOR]) >= n_r
+        ):
+            break
+    selected = []
+    selected.extend(by_type[COMMIT_TYPE_FEATURE][:n_f])
+    selected.extend(by_type[COMMIT_TYPE_BUG][:n_b])
+    selected.extend(by_type[COMMIT_TYPE_REFACTOR][:n_r])
+    need_more = max_tasks - len(selected)
+    if need_more > 0:
+        remainder = (
+            by_type[COMMIT_TYPE_FEATURE][n_f:]
+            + by_type[COMMIT_TYPE_BUG][n_b:]
+            + by_type[COMMIT_TYPE_REFACTOR][n_r:]
+        )
+        selected.extend(remainder[:need_more])
+    return selected
+
+
+def _build_tasks_from_merges(
+    selected: list[tuple[MergeCommitInfo, str]],
+    repo_map: str,
+) -> tuple[dict[str, list[dict]], list[dict]]:
+    """Build task objects from selected (merge, type) pairs. Returns (tasks_by_type, tasks_list)."""
+    tasks: dict[str, list[dict]] = {
+        COMMIT_TYPE_FEATURE: [],
+        COMMIT_TYPE_BUG: [],
+        COMMIT_TYPE_REFACTOR: [],
+    }
+    for i, (m, ctype) in enumerate(selected, start=1):
+        gt = extract_ground_truth(m.diff, m.message)
+        try:
+            prompt, difficulty = reverse_engineer_prompt(repo_map, m.message, m.diff)
+        except Exception as e:
+            print(f"  Merge {m.merge_sha[:8]} LLM error: {e}", file=sys.stderr)
+            prompt = "Implement a change that is nice to have for this repo."
+            difficulty = "Medium"
+        obj = build_task_object(
+            f"task_{i:03d}", prompt, m.parent_sha, gt, difficulty, task_type=ctype
+        )
+        tasks[ctype].append(obj)
+    tasks_list = [t for lst in tasks.values() for t in lst]
+    return tasks, tasks_list
+
+
+def _write_tasks(tasks_list: list[dict], tasks: dict[str, list[dict]], data_dir: Path) -> None:
+    """Write tasks_list to data_dir/tasks.json and print summary."""
+    data_dir.mkdir(parents=True, exist_ok=True)
+    out_path = data_dir / "tasks.json"
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(tasks_list, f, indent=2)
+    print(f"Wrote {len(tasks_list)} tasks to {out_path}")
+    print(
+        f"Feature: {len(tasks[COMMIT_TYPE_FEATURE])}, "
+        f"Bug: {len(tasks[COMMIT_TYPE_BUG])}, Refactor: {len(tasks[COMMIT_TYPE_REFACTOR])}"
+    )
 
 
 def cmd_contextize(args):
@@ -32,7 +142,7 @@ def cmd_contextize(args):
     clone_repo(repo_url, branch=branch)
     print("Building repo map with repomix...")
     get_repo_map_cached(repo_url, force_refresh=True)
-    print("Done. Repo map written to data/repo_map.xml")
+    print("Done.")
 
 
 def cmd_generate_tasks(args):
@@ -46,31 +156,24 @@ def cmd_generate_tasks(args):
     if not repo_path.exists():
         print("Error: repo not cloned. Run 'contextize' first.", file=sys.stderr)
         sys.exit(1)
+
     repo_map = get_repo_map_cached(repo_url)
     max_commits = args.max_commits or cfg.get("max_merge_commits", 100)
     max_tasks = args.max_tasks or cfg.get("max_tasks", 30)
     print(f"Extracting last {max_commits} merge commits...")
     merges = extract_merge_commits(repo_path, max_commits=max_commits)
-    print(f"Got {len(merges)} merges. Generating tasks (prompt + ground truth)...")
-    tasks = []
-    for i, m in enumerate(merges):
-        gt = extract_ground_truth(m.diff, m.message)
-        try:
-            prompt, difficulty = reverse_engineer_prompt(repo_map, m.message, m.diff)
-        except Exception as e:
-            print(f"  Merge {m.merge_sha[:8]} LLM error: {e}", file=sys.stderr)
-            prompt = "Implement the change suggested by the commit."
-            difficulty = "Medium"
-        task_id = f"task_{i+1:03d}"
-        obj = build_task_object(task_id, prompt, m.parent_sha, gt, difficulty)
-        tasks.append(obj)
-        if len(tasks) >= max_tasks:
-            break
-    out_path = data_dir / "tasks.json"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(tasks, f, indent=2)
-    print(f"Wrote {len(tasks)} tasks to {out_path}")
+
+    _save_merge_commits(merges, data_dir)
+
+    print(f"Got {len(merges)} merges. Classifying by type (aiming for ~50% feature, ~30% bug, ~20% refactor)...")
+    # shuffle the merges
+    random.shuffle(merges)
+
+    selected = _select_merges_by_type(merges, max_tasks)
+    print(f"Selected {len(selected)} merges. Generating prompts and ground truth...")
+
+    tasks, tasks_list = _build_tasks_from_merges(selected, repo_map)
+    _write_tasks(tasks_list, tasks, data_dir)
 
 
 def cmd_run_plans(args):
@@ -114,12 +217,14 @@ def cmd_grade(args):
             continue
         plan_text = plan_path.read_text(encoding="utf-8")
         steps = extract_claims(plan_text)
-        claim_ratio, _ = verify_claims_via_search(steps)
+        claim_ratio, unknown_ratio, _ = verify_claims_via_search(steps, max_num_claims=cfg.get("max_num_claims_per_task", 3))
         logical_soundness = score_logical_soundness(plan_text, steps, repo_map)
-        gt_metrics = compute_ground_truth_metrics(task, plan_text, repo_map=repo_map)
+        gt_metrics = compute_ground_truth_metrics(
+            task, plan_text, repo_map=repo_map, data_dir=data_dir
+        )
         quality = score_text_quality(plan_text)
         score, breakdown = aggregate_task_result(
-            claim_ratio, logical_soundness, gt_metrics, quality
+            claim_ratio, unknown_ratio, logical_soundness, gt_metrics, quality
         )
         results.append({
             "task_id": task_id,

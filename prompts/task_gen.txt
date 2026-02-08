@@ -1,10 +1,10 @@
-You are given a git merge commit and its diff (the code change that was merged). Your job is to reverse-engineer: what prompt would a user have asked to trigger this specific code change?
+You are given a git merge commit and its diff (the code change that was merged). Your job is to reverse-engineer: what prompt would a user have asked to trigger this specific code change? If it is unclear from the commit messages, try your best to guess / make up a task that would involve changing the files in the diff.
 
 Rules:
-- Write a single user-style prompt (as if the user typed it to an AI coding assistant).
-- The prompt can have larger scope than this single diff (e.g. "Improve error handling in the auth flow").
+- Write a user-style prompt as if the user typed it to an AI coding agent.
+- The prompt should have a sufficiently large scope that would require the AI agent to write a **plan** before the implementation (e.g. "Improve error handling in the auth flow").
+- Base your prompt on the repo context (Repo Map) and the diff. The prompt should trigger the changes in the diff.
 - Do NOT mention the solution or implementation details (no file names, no "add retry logic", etc.).
-- Base your prompt on the repo context (Repo Map) and the diff only.
 
 Output format:
 Respond with exactly two lines:

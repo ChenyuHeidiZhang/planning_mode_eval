@@ -6,7 +6,7 @@
 
 
 def aggregate_scores(
-    claim_ratio: float,
+    verified_and_unknown_claim_ratio: float,
     logical_soundness: float,
     file_recall: float,
     file_precision: float,
@@ -18,19 +18,19 @@ def aggregate_scores(
 ) -> float:
     """
     Weights:
-    - Claim Verification 40%: claim_ratio 20%, logical_soundness 20%
+    - Claim Verification 40%: verified_and_unknown_claim_ratio 20%, logical_soundness 20%
     - Ground Truth 40%: file_recall 10%, file_precision 10%, gt_judge 20%
     - Quality 20%: conciseness 5%, precision 5%, tone 5%, formatting 5%
     """
-    claim_part = 0.20 * claim_ratio + 0.20 * logical_soundness
+    claim_part = 0.20 * verified_and_unknown_claim_ratio + 0.20 * logical_soundness
     gt_part = 0.10 * file_recall + 0.10 * file_precision + 0.20 * gt_judge
     quality_part = 0.05 * conciseness + 0.05 * precision + 0.05 * tone + 0.05 * formatting
     return 100.0 * (claim_part + gt_part + quality_part)
 
 
 def aggregate_task_result(
-    claim_ratio: float,
-    unknown_ratio: float,
+    verified_and_unknown_claim_ratio: float,
+    unknown_claim_ratio: float,
     logical_soundness: float,
     gt_metrics: dict,
     quality_scores: dict,
@@ -41,7 +41,7 @@ def aggregate_task_result(
     Returns (final_score_0_100, breakdown_dict).
     """
     score = aggregate_scores(
-        claim_ratio=claim_ratio,
+        verified_and_unknown_claim_ratio=verified_and_unknown_claim_ratio,
         logical_soundness=logical_soundness,
         file_recall=gt_metrics.get("file_recall", 0),
         file_precision=gt_metrics.get("file_precision", 0),
@@ -52,8 +52,8 @@ def aggregate_task_result(
         formatting=quality_scores.get("formatting", 0),
     )
     breakdown = {
-        "claim_ratio": claim_ratio,
-        "unknown_ratio": unknown_ratio,
+        "verified_and_unknown_claim_ratio": verified_and_unknown_claim_ratio,
+        "unknown_claim_ratio": unknown_claim_ratio,
         "logical_soundness": logical_soundness,
         "file_recall": gt_metrics.get("file_recall", 0),
         "file_precision": gt_metrics.get("file_precision", 0),

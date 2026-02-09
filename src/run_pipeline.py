@@ -221,14 +221,14 @@ def cmd_grade(args):
             continue
         plan_text = plan_path.read_text(encoding="utf-8")
         steps = extract_claims(plan_text)
-        claim_ratio, unknown_ratio, _ = verify_claims_via_search(steps, max_num_claims=cfg.get("max_num_claims_per_task", 3))
+        verified_and_unknown_claim_ratio, unknown_claim_ratio, _ = verify_claims_via_search(steps, max_num_claims=cfg.get("max_num_claims_per_task", 3))
         logical_soundness = score_logical_soundness(plan_text, steps, repo_map)
         gt_metrics = compute_ground_truth_metrics(
             task, plan_text, repo_map=repo_map, data_dir=data_dir
         )
         quality = score_text_quality(plan_text)
         score, breakdown = aggregate_task_result(
-            claim_ratio, unknown_ratio, logical_soundness, gt_metrics, quality
+            verified_and_unknown_claim_ratio, unknown_claim_ratio, logical_soundness, gt_metrics, quality
         )
         results.append({
             "task_id": task_id,

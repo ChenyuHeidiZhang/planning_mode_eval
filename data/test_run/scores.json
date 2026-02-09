@@ -3,8 +3,8 @@
     "task_id": "task_001",
     "score": 48.75,
     "breakdown": {
-      "claim_ratio": 1.0,
-      "unknown_ratio": 0.5,
+      "verified_and_unknown_claim_ratio": 1.0,
+      "unknown_claim_ratio": 0.5,
       "logical_soundness": 0.75,
       "file_recall": 0.0,
       "file_precision": 0.0,
@@ -19,8 +19,8 @@
     "task_id": "task_002",
     "score": 59.47,
     "breakdown": {
-      "claim_ratio": 1.0,
-      "unknown_ratio": 1.0,
+      "verified_and_unknown_claim_ratio": 1.0,
+      "unknown_claim_ratio": 1.0,
       "logical_soundness": 0.75,
       "file_recall": 0.021739130434782608,
       "file_precision": 0.05,

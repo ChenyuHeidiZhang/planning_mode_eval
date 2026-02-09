@@ -8,8 +8,8 @@ This project aims to build an evaluation pipeline for **Claude Code's Plan Mode*
 2. **Configure:** Copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`. Optionally set `BRAVE_SEARCH_API_KEY` for claim verification (get a key at [Brave Search API](https://api-dashboard.search.brave.com/)). Set `repo_url` (and optionally `branch`) in `config.yaml`.
 3. **Run the pipeline** from the project root:
    - `python -m src.run_pipeline contextize` — clone repo and build repo map
-   - `python -m src.run_pipeline generate-tasks` — generate tasks from last N merge commits
-   - `python -m src.run_pipeline run-plans` — run Claude Plan Mode for each task
+   - `python -m src.run_pipeline generate-tasks` — generate tasks from last N merge commits (~3 min for 30 tasks)
+   - `python -m src.run_pipeline run-plans` — run Claude Plan Mode for each task (this is going to take some time -- up to 6min/task)
    - `python -m src.run_pipeline grade` — grade plans and write `data/scores.json`
    - `python -m src.run_pipeline all` — run all steps in sequence
 
@@ -195,7 +195,6 @@ Recall: $\frac{\text{Intersection(Plan Files, Truth Files)}}{\text{Total Truth F
 
 Precision: $\frac{\text{Intersection(Plan Files, Truth Files)}}{\text{Total Plan Files}}$
 
-* [Future work] Consider cases when the task may have a larger scope than the commits in the PR. (label that when generating the task?)
 
 **Metric 2**: LLM judge 
 
@@ -246,6 +245,20 @@ The final score (0-100) is a weighted average of sub-scores under the 3 dimensio
 * Formatting (5%)
 
 
+---
 
+## Future Steps
+
+* Repo Map:
+    * The repo map is useful for LLMs to understand the repo within their context window, but currently it is a big static chunk of text. Some retrieval mechanism would be helpful especially for larger repos.
+* Task Gen:
+    * Do user research on real-world usage of planning mode to see what types of tasks are relevant. Generate tasks based on that.
+    * The advantage of basing task generation on PRs is that we get "ground truth" labels, but the quality of the labels can still be improved. Currently they are extracted using heuristics, but we can also use LLMs.
+    * Another con of using PRs is that many may have limited scope than what would mandate the creation of a 'plan'. While we mitigate that here by removing those non-plan-mode commits with the commit classification prompt, there are still nuances remaining.
+* Grading:
+    * Calibrate the autorater performance with human evaluation. Prompts could be tuned further.
+    * Claim Verification:
+        * We should distinguish between claims that are verifiable with web searches only, and those that depend on the context of the repo.
+        * Currently we only rate 5 claims for each task due to API limit, but more would be better.
 
 

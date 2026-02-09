@@ -1,5 +1,6 @@
 # Data and artifacts
 data/repos
+data/run-*
 logs/
 .env
 *.pyc

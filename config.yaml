@@ -5,7 +5,7 @@ repo_url: "https://github.com/stanfordnlp/dspy"  # e.g. https://github.com/owner
 branch: "main"
 
 # run_id is used to identify a set of generate-tasks, run-plans, and grade runs on the repo. If not set, a timestamp will be used.
-run_id: "test_run"
+run_id: "run-30-tasks"
 
 # Paths (relative to project root or absolute)
 data_dir: "data"
@@ -28,10 +28,10 @@ repomix_ignore: >
 
 # Task generation
 max_merge_commits: 100
-max_tasks: 2
+max_tasks: 30
 
 # Runner
 plan_timeout_seconds: 600
 
 # Grading
-max_num_claims_per_task: 3  # Brave Search API has free tier; see https://api-dashboard.search.brave.com/
+max_num_claims_per_task: 5  # Brave Search API free tier is limited to 2000 queries per month; see https://api-dashboard.search.brave.com/

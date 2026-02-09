@@ -2,6 +2,8 @@
 
 This project aims to build an evaluation pipeline for **Claude Code's Plan Mode**. The pipeline would involve first generating ~30 tasks for a given repo, then running the tasks on Claude code, and finally grading the output plan.
 
+Video presentation: https://www.loom.com/share/613d4858cf2c4012ae3074a5a4c35250
+
 ## Usage
 
 1. **Install dependencies:** `pip install -r requirements.txt` (or `pip install -e .`). Ensure **Node/npx** (for repomix) and **git** are available. Install and authenticate the **Claude Code CLI** for the run-plans step.

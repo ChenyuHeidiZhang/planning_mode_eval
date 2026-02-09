@@ -166,7 +166,7 @@ def run_plans_for_all_tasks(
 ) -> list[tuple[dict, Path]]:
     """Run plan for each task. Returns list of (task, plan_path). Failed runs yield plan_path to plan_raw.txt or missing."""
     results = []
-    for task in tasks[1:]:
+    for task in tasks:
         try:
             path = run_plan_for_task(task, repo_url, plans_dir=plans_dir)
             results.append((task, path))
